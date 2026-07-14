@@ -10,7 +10,7 @@ import json, time, uuid, os
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "messages.json"
 LOCK = Lock()
-CLIENTS = {}  # id -> {name, room, typing, queue, seen}
+CLIENTS = {}
 try:
     HISTORY = json.loads(DATA.read_text("utf-8"))
 except Exception:
@@ -25,12 +25,9 @@ def save():
 def room_clients(room): return [c for c in CLIENTS.values() if c["room"] == room]
 def emit(room, event, exclude=None):
     for cid, c in CLIENTS.items():
-        if c["room"] == room and cid != exclude:
-            c["queue"].append(event)
-def update_users(room):
-    emit(room, {"type":"users", "users":[c["name"] for c in room_clients(room)]})
-def update_typing(room):
-    emit(room, {"type":"typing", "users":[c["name"] for c in room_clients(room) if c["typing"]]})
+        if c["room"] == room and cid != exclude: c["queue"].append(event)
+def update_users(room): emit(room, {"type":"users", "users":[c["name"] for c in room_clients(room)]})
+def update_typing(room): emit(room, {"type":"typing", "users":[c["name"] for c in room_clients(room) if c["typing"]]})
 def remove_client(cid):
     c = CLIENTS.pop(cid, None)
     if c:
@@ -56,16 +53,11 @@ class Handler(SimpleHTTPRequestHandler):
         u=urlparse(self.path)
         if u.path == "/api/poll":
             cid=parse_qs(u.query).get("client",[""])[0]
-            deadline=time.time()+20
-            while time.time()<deadline:
-                with LOCK:
-                    prune(); c=CLIENTS.get(cid)
-                    if not c: return self.json_out({"error":"session expired"},410)
-                    c["seen"]=time.time()
-                    if c["queue"]:
-                        events=c["queue"][:]; c["queue"].clear(); return self.json_out({"events":events})
-                time.sleep(.15)
-            return self.json_out({"events":[]})
+            with LOCK:
+                prune(); c=CLIENTS.get(cid)
+                if not c: return self.json_out({"error":"session expired"},410)
+                c["seen"]=time.time(); events=c["queue"][:]; c["queue"].clear()
+            return self.json_out({"events":events})
         super().do_GET()
     def do_POST(self):
         d=self.body()
