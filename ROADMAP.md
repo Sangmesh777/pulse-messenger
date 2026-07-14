@@ -1,4 +1,6 @@
 # Pulse Messenger — Product Roadmap
+> **Roadmap set:** [Clean implementation path](ROADMAP.md) · [Broad product vision](BROAD_ROADMAP.md) · [Master premium features](MASTER_FEATURE_PLAN.md)
+
 
 ## 1. Product goal
 
