@@ -2,7 +2,13 @@
 
 A working real-time room messenger using only Python 3. No Node.js and no package installation.
 
-## Start
+## Live App
+
+**Open Pulse Messenger:** https://pulse-messenger-y1td.onrender.com
+
+Share the link with other users and enter the same room name to chat in real time. The free Render service may take up to a minute to wake after inactivity.
+
+## Run Locally
 
 ### Windows
 Double-click `start_windows.bat`, or open Command Prompt in this folder and run:
@@ -39,5 +45,16 @@ You may need to allow Python through the computer firewall.
 - Responsive desktop/mobile design
 - No third-party dependencies
 
+## Render Deployment
+
+This repository includes `render.yaml` with the correct Python web-service configuration:
+
+```yaml
+startCommand: python server.py
+healthCheckPath: /
+```
+
+Render automatically redeploys updates pushed to the `main` branch.
+
 ## Production note
-For a public internet deployment, add HTTPS, user authentication, rate limiting, moderation, and a production database.
+For a larger public service, add user authentication, rate limiting, moderation, and a production database.
