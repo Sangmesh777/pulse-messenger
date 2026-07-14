@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: pulse-messenger
+    runtime: python
+    plan: free
+    buildCommand: ""
+    startCommand: python server.py
+    healthCheckPath: /
+    autoDeploy: true

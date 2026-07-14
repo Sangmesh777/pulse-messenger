@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Pulse — a lightweight real-time messenger" />
+  <title>Pulse Messenger</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="joinView" class="join-shell">
+    <section class="join-card">
+      <div class="brand-mark">P</div>
+      <p class="eyebrow">REAL-TIME MESSENGER</p>
+      <h1>Meet in the moment.</h1>
+      <p class="muted">Choose a name and join a room. Messages arrive instantly.</p>
+      <form id="joinForm" class="join-form">
+        <label>Display name<input id="nameInput" maxlength="24" autocomplete="nickname" placeholder="Your name" required /></label>
+        <label>Room<input id="roomInput" maxlength="24" value="general" placeholder="general" required /></label>
+        <button type="submit">Join conversation <span>→</span></button>
+      </form>
+      <p id="joinError" class="error" role="alert"></p>
+    </section>
+  </div>
+
+  <main id="chatView" class="app hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="brand"><div class="brand-mark small">P</div><strong>Pulse</strong><button id="closeSidebar" class="icon-button mobile-only" aria-label="Close sidebar">×</button></div>
+      <div class="room-block"><span class="label">CURRENT ROOM</span><div class="room-name"><span>#</span><strong id="roomLabel">general</strong></div></div>
+      <div class="people-head"><span class="label">ONLINE</span><span id="onlineCount" class="count">0</span></div>
+      <div id="userList" class="user-list"></div>
+      <button id="leaveButton" class="leave-button">Leave room</button>
+    </aside>
+
+    <section class="chat-panel">
+      <header class="chat-header">
+        <button id="openSidebar" class="icon-button mobile-only" aria-label="Open sidebar">☰</button>
+        <div><h2 id="headerRoom"># general</h2><p><span class="live-dot"></span><span id="statusText">Connecting…</span></p></div>
+      </header>
+      <div id="messages" class="messages" aria-live="polite"></div>
+      <div class="composer-wrap">
+        <div id="typingText" class="typing" aria-live="polite"></div>
+        <form id="messageForm" class="composer">
+          <textarea id="messageInput" rows="1" maxlength="1000" placeholder="Message #general" aria-label="Message" required></textarea>
+          <button id="sendButton" type="submit" aria-label="Send message">↑</button>
+        </form>
+        <p class="hint">Enter to send · Shift + Enter for a new line</p>
+      </div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
